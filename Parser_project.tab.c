@@ -470,8 +470,8 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    53,    53,    56,    57,    60,    73,    82,    85,    90,
-      91,    92,    93,    94,    97,    98,    99,   100,   101,   102,
-     103,   104,   107,   120,   121,   124,   125,   128,   129
+      91,    92,   104,   105,   108,   109,   120,   121,   122,   123,
+     124,   125,   138,   151,   152,   165,   166,   169,   170
 };
 #endif
 
@@ -1354,126 +1354,167 @@ yyreduce:
 
   case 11:
 #line 92 "Parser_project.y" /* yacc.c:1646  */
-    {printf("\n READ statement found \n");(yyval.fp) = nodeFun(303, "", 0, 0, 0, 0, (yyvsp[-1].idname), 0, ' ',0);}
-#line 1359 "Parser_project.tab.c" /* yacc.c:1646  */
+    {printf("\n READ statement found \n");(yyval.fp) = nodeFun(303, "", 0, 0, 0, 0, (yyvsp[-1].idname), 0, ' ',0);
+												if(getNode((yyvsp[-1].idname),"Globl") == NULL || getNode((yyvsp[-1].idname),"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",(yyvsp[-1].idname)); 
+													exit(0);
+												}
+												else
+												{
+													printf("\tID (%s) EXISTS\n", (yyvsp[-1].idname)); 
+												}
+	 
+											}
+#line 1370 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 93 "Parser_project.y" /* yacc.c:1646  */
+#line 104 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n Expr found \n");(yyval.fp) = nodeFun(301, "", (yyvsp[-1].fp), 0, 0, 0, "", 0, ' ',0);}
-#line 1365 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1376 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 94 "Parser_project.y" /* yacc.c:1646  */
+#line 105 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n RETURN found \n");(yyval.fp) = nodeFun(302, "", (yyvsp[-1].fp), 0, 0, 0, "", 0, ' ',0);}
-#line 1371 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1382 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 97 "Parser_project.y" /* yacc.c:1646  */
+#line 108 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n Primary found\n");(yyval.fp) = nodeFun(400, "", (yyvsp[0].fp), 0, 0, 0, "", 0, ' ',0);}
-#line 1377 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1388 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 98 "Parser_project.y" /* yacc.c:1646  */
-    {printf("\n Assignment found\n");(yyval.fp) = nodeFun(403, "", 0, (yyvsp[0].fp), 0, 0, (yyvsp[-2].idname), 0, ' ',0);}
-#line 1383 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 109 "Parser_project.y" /* yacc.c:1646  */
+    {printf("\n Assignment found\n");(yyval.fp) = nodeFun(403, "", 0, (yyvsp[0].fp), 0, 0, (yyvsp[-2].idname), 0, ' ',0);
+												if(getNode((yyvsp[-2].idname),"Globl") == NULL || getNode((yyvsp[-2].idname),"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",(yyvsp[-2].idname)); 
+													exit(0);
+												}
+												else
+												{
+													printf("\tID (%s) EXISTS\n", (yyvsp[-2].idname)); 
+												} 
+											}
+#line 1404 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 99 "Parser_project.y" /* yacc.c:1646  */
+#line 120 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n Addition found\n");(yyval.fp) = nodeFun(402, "", (yyvsp[-2].fp), 0, (yyvsp[0].fp), 0, "ADD", 0, ' ',0);}
-#line 1389 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1410 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 100 "Parser_project.y" /* yacc.c:1646  */
+#line 121 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n Mult found\n");(yyval.fp) = nodeFun(402, "", (yyvsp[-2].fp), 0, (yyvsp[0].fp), 0, "MULT", 0, ' ',0);}
-#line 1395 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1416 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 101 "Parser_project.y" /* yacc.c:1646  */
+#line 122 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n Sub found \n");(yyval.fp) = nodeFun(402, "", (yyvsp[-2].fp), 0, (yyvsp[0].fp), 0, "SUBS", 0, ' ',0);}
-#line 1401 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1422 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 102 "Parser_project.y" /* yacc.c:1646  */
+#line 123 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n Div found\n");(yyval.fp) = nodeFun(402, "", (yyvsp[-2].fp), 0, (yyvsp[0].fp), 0, "DIV", 0, ' ',0);}
-#line 1407 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1428 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 103 "Parser_project.y" /* yacc.c:1646  */
+#line 124 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n Number found: %d\n", (yyvsp[0].i));(yyval.fp) = nodeFun(401, "", 0, 0, 0, 0, "", (yyvsp[0].i), ' ',0);}
-#line 1413 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1434 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 104 "Parser_project.y" /* yacc.c:1646  */
-    {printf("\n ID expression found\n");(yyval.fp) = nodeFun(404, "", 0, (yyvsp[-3].fp), (yyvsp[0].fp), 0, (yyvsp[-5].idname), 0, ' ',0);}
-#line 1419 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 125 "Parser_project.y" /* yacc.c:1646  */
+    {printf("\n ID expression found\n");(yyval.fp) = nodeFun(404, "", 0, (yyvsp[-3].fp), (yyvsp[0].fp), 0, (yyvsp[-5].idname), 0, ' ',0);
+												if(getNode((yyvsp[-5].idname),"Globl") == NULL || getNode((yyvsp[-5].idname),"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",(yyvsp[-5].idname)); 
+													exit(0);
+												}
+												else
+												{
+													printf("\tID (%s) EXISTS\n", (yyvsp[-5].idname)); 
+												}
+											}
+#line 1450 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 107 "Parser_project.y" /* yacc.c:1646  */
+#line 138 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n ID found: %s\n", (yyvsp[0].idname));(yyval.fp) = nodeFun(500, "", 0, 0, 0, 0, (yyvsp[0].idname), 0, ' ',0);
 												//printScopeRowNamed("Globl");
 												//printf("%ld", getNode($1,"Globl"));
 												if(getNode((yyvsp[0].idname),"Globl") == NULL || getNode((yyvsp[0].idname),"Globl") == 0)
 												{
 													printf("\t\tID (%s) does not exist\n",(yyvsp[0].idname)); 
-													//exit(0);
+													exit(0);
 												}
 												else
 												{
 													printf("\tID (%s) EXISTS\n", (yyvsp[0].idname)); 
 												}
 											}
-#line 1437 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1468 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 120 "Parser_project.y" /* yacc.c:1646  */
+#line 151 "Parser_project.y" /* yacc.c:1646  */
     {printf("\n Expression parentheses found\n");(yyval.fp) = nodeFun(502, "", (yyvsp[-1].fp), 0, 0, 0, "", 0, ' ',0);}
-#line 1443 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1474 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 121 "Parser_project.y" /* yacc.c:1646  */
-    {printf("\n Array expression found\n");(yyval.fp) = nodeFun(504, "", 0, (yyvsp[-1].fp), 0, 0, (yyvsp[-3].idname), 0, ' ',0);}
-#line 1449 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 152 "Parser_project.y" /* yacc.c:1646  */
+    {printf("\n Array expression found\n");(yyval.fp) = nodeFun(504, "", 0, (yyvsp[-1].fp), 0, 0, (yyvsp[-3].idname), 0, ' ',0);
+													if(getNode((yyvsp[-3].idname),"Globl") == NULL || getNode((yyvsp[-3].idname),"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",(yyvsp[-3].idname)); 
+													exit(0);
+												}
+												else
+												{
+													printf("\tID (%s) EXISTS\n", (yyvsp[-3].idname)); 
+												}	
+												}
+#line 1490 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 124 "Parser_project.y" /* yacc.c:1646  */
+#line 165 "Parser_project.y" /* yacc.c:1646  */
     {(yyval.fp) = nodeFun(700, "", 0, 0, 0, 0, "", 0, ' ',0);}
-#line 1455 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1496 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 125 "Parser_project.y" /* yacc.c:1646  */
+#line 166 "Parser_project.y" /* yacc.c:1646  */
     {(yyval.fp) = nodeFun(700, "", (yyvsp[0].fp), 0, 0, 0, "", 0, ' ',0);}
-#line 1461 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1502 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 128 "Parser_project.y" /* yacc.c:1646  */
+#line 169 "Parser_project.y" /* yacc.c:1646  */
     {(yyval.fp) = nodeFun(217, "", (yyvsp[0].fp), 0, 0, 0, "", 0, ' ',0);}
-#line 1467 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1508 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 129 "Parser_project.y" /* yacc.c:1646  */
+#line 170 "Parser_project.y" /* yacc.c:1646  */
     {(yyval.fp) = nodeFun(218, "", (yyvsp[-1].fp), (yyvsp[0].fp), 0, 0, "", 0, ' ',0);}
-#line 1473 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1514 "Parser_project.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1477 "Parser_project.tab.c" /* yacc.c:1646  */
+#line 1518 "Parser_project.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1701,7 +1742,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 132 "Parser_project.y" /* yacc.c:1906  */
+#line 173 "Parser_project.y" /* yacc.c:1906  */
 
 
 

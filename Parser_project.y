@@ -89,19 +89,50 @@ StmtList: Stmt 								{printf("\n Stmt found \n");
    
 Stmt:  SEMI                                {printf("\n SEMI found \n");$$ = nodeFun(300, "", 0, 0, 0, 0, "", 0, ' ',0);} 
      |WRITE Expr SEMI                      {printf("\n WRITE found \n");$$ = nodeFun(304, "", $2, 0, 0, 0, "", 0, ' ',0);}
-     |READ ID SEMI                         {printf("\n READ statement found \n");$$ = nodeFun(303, "", 0, 0, 0, 0, $2, 0, ' ',0);}
+     |READ ID SEMI                         {printf("\n READ statement found \n");$$ = nodeFun(303, "", 0, 0, 0, 0, $2, 0, ' ',0);
+												if(getNode($2,"Globl") == NULL || getNode($2,"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",$2); 
+													exit(0);
+												}
+												else
+												{
+													printf("\tID (%s) EXISTS\n", $2); 
+												}
+	 
+											}
      |Expr SEMI                            {printf("\n Expr found \n");$$ = nodeFun(301, "", $1, 0, 0, 0, "", 0, ' ',0);}
      |RETURN Expr SEMI                     {printf("\n RETURN found \n");$$ = nodeFun(302, "", $2, 0, 0, 0, "", 0, ' ',0);}  
    ;
 
 Expr: Primary                              {printf("\n Primary found\n");$$ = nodeFun(400, "", $1, 0, 0, 0, "", 0, ' ',0);}
-     |ID  EQUALS Expr                      {printf("\n Assignment found\n");$$ = nodeFun(403, "", 0, $3, 0, 0, $1, 0, ' ',0);}
+     |ID  EQUALS Expr                      {printf("\n Assignment found\n");$$ = nodeFun(403, "", 0, $3, 0, 0, $1, 0, ' ',0);
+												if(getNode($1,"Globl") == NULL || getNode($1,"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",$1); 
+													exit(0);
+												}
+												else
+												{
+													printf("\tID (%s) EXISTS\n", $1); 
+												} 
+											}
      |Expr ADD Expr                        {printf("\n Addition found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "ADD", 0, ' ',0);} 
      |Expr MULT Expr                       {printf("\n Mult found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "MULT", 0, ' ',0);}
      |Expr SUBS Expr                       {printf("\n Sub found \n");$$ = nodeFun(402, "", $1, 0, $3, 0, "SUBS", 0, ' ',0);}
      |Expr DIV Expr                        {printf("\n Div found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "DIV", 0, ' ',0);}
      |NUM                                  {printf("\n Number found: %d\n", $1);$$ = nodeFun(401, "", 0, 0, 0, 0, "", $1, ' ',0);}
-     |ID LBRACK Expr RBRACK EQUALS Expr    {printf("\n ID expression found\n");$$ = nodeFun(404, "", 0, $3, $6, 0, $1, 0, ' ',0);}
+     |ID LBRACK Expr RBRACK EQUALS Expr    {printf("\n ID expression found\n");$$ = nodeFun(404, "", 0, $3, $6, 0, $1, 0, ' ',0);
+												if(getNode($1,"Globl") == NULL || getNode($1,"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",$1); 
+													exit(0);
+												}
+												else
+												{
+													printf("\tID (%s) EXISTS\n", $1); 
+												}
+											}
    ;
 
 Primary: ID                                {printf("\n ID found: %s\n", $1);$$ = nodeFun(500, "", 0, 0, 0, 0, $1, 0, ' ',0);
@@ -110,7 +141,7 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 												if(getNode($1,"Globl") == NULL || getNode($1,"Globl") == 0)
 												{
 													printf("\t\tID (%s) does not exist\n",$1); 
-													//exit(0);
+													exit(0);
 												}
 												else
 												{
@@ -118,7 +149,17 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 												}
 											} 
         |LPAR Expr RPAR                    {printf("\n Expression parentheses found\n");$$ = nodeFun(502, "", $2, 0, 0, 0, "", 0, ' ',0);}    
-        |ID LBRACK ExprList RBRACK             {printf("\n Array expression found\n");$$ = nodeFun(504, "", 0, $3, 0, 0, $1, 0, ' ',0);}
+        |ID LBRACK ExprList RBRACK             {printf("\n Array expression found\n");$$ = nodeFun(504, "", 0, $3, 0, 0, $1, 0, ' ',0);
+													if(getNode($1,"Globl") == NULL || getNode($1,"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",$1); 
+													exit(0);
+												}
+												else
+												{
+													printf("\tID (%s) EXISTS\n", $1); 
+												}	
+												}
     ;
 
 ExprList: %empty							{$$ = nodeFun(700, "", 0, 0, 0, 0, "", 0, ' ',0);}

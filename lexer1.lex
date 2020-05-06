@@ -34,7 +34,7 @@ int DISPLAY_FLEX_OUTPUT = 1;
 
 [a-z][a-zA-Z0-9_]* {if(DISPLAY_FLEX_OUTPUT) printf("%s ID\n",yytext); sscanf(yytext, "%s", yylval.idname); return (ID);}
 
-[ \t\n\r\z]+  { /* ignore white space */ }
+[ \t\n\r]+  { /* ignore white space */ }
 .		  {printf("\nPeculiar input at line %d\n", yylineno); printf("INPUT:[%s]\n\n",yytext);}
 
 %%
