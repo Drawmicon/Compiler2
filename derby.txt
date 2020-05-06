@@ -1,0 +1,111 @@
+int notUsed;
+char notUsed;
+
+int largest_element[num];
+
+    int i;
+    int max_element [5];
+
+    max_element [0] = arr;
+
+	int x;
+	int y;
+	int z;
+	
+	x = 1;
+	y = 2;
+	z = 3;
+	
+	x = x^3;
+	y = 2^x
+	z = (x+y)/(x-y)
+	
+	write z;
+	write 0;
+	z = z/z;
+	
+    write 2;
+	writeln;writeln;writeln;
+	write z;
+	write 0;
+	write z;
+	write 0;
+	
+	x = 1;
+	y = 2;
+	z = 3;
+	
+	x = x^3;
+	y = 2^x
+	z = (x+y)/(x-y);
+	
+	
+	write 2+2;
+	writeln;writeln;writeln;
+	write z;
+	writeln;
+	write z;
+	writeln;
+	z = z/z;
+	
+	x = 1;
+	y = 2;
+	z = 3;
+	
+	x = x^3;
+	y = 2^x
+	z = (x+y)/(x-y)
+	
+	write z;
+	writeln;
+	z = z/z;
+	
+    	write 2;
+	write 0;write 0;write 0;
+	write z;
+	writeln;
+	write z;
+	writeln;
+	
+	x = 1;
+	y = 2;
+	z = 3;
+	
+	x = x^3;
+	y = 2^x
+	z = (x+y)/(x-y)
+	
+	write z;
+	writeln;
+	z = z/z;
+	
+	x = 1;
+	y = 2;
+	z = 3;
+	
+	x = x^3;
+	y = 2^x
+	z = (x+y)/(x-y)
+	
+	
+    	write x;
+	writeln;writeln;writeln;
+	write z;
+	write 0;
+	write z;
+	writeln;
+	z = z/z;
+	
+	x = 1;
+	y = 2;
+	z = 3;
+	
+	x = x^3;
+	y = 2^x
+	z = (x+y)/(x-y)
+	
+	write z;
+	writeln;
+	z = z/z;
+	
+	return z;
