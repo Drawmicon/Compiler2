@@ -1,8 +1,10 @@
 int x;
 char y;
 int a[5];
+char b[1];
 x = y;
 Read y;
 y = x;
 a = 5 + 1;
 b = 6;
+x = 1 % 1;

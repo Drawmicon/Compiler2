@@ -17,7 +17,7 @@
   int i;
   double d;
   char c;
-  char type [3]; 
+  char type [3];
   char idname[100] ;
   char arr [100];
   struct Node * fp;
@@ -30,20 +30,19 @@
 %type <arr> ARRAY
 
 %token IF ELSE WHILE RETURN BREAK READ WRITE
-%token LPAR RPAR LBRACK RBRACK LBRACE RBRACE SEMI EQUALS MULT ADD DIV SUBS
+%token LPAR RPAR LBRACK RBRACK LBRACE RBRACE SEMI EQUALS MULT ADD DIV SUBS MOD
 
 /*%token program VarDecl VarDeclList StmtList ExprList Stmt Expr Primary ExprListTail*/
 %type <fp> program VarDecl VarDeclList StmtList ExprList Stmt Expr Primary ExprListTail 
 
 %start program
 
-/*Lower precedence*/
+/*Lower precedence*/ 
 %right EQUAL
 %left ADD SUBS
-%left MULT DIV
+%left MULT DIV MOD
 %left LPAR RPAR
 /*Higher precendece*/
-
 
 //node type, name, left pointer, right, middle, extra, text value, int value, character value
 //struct Node * nodeFun(int nodeType, char * name, struct Node * l, struct Node * r, struct Node * m,struct Node * x, char * text, int val, char sym)
@@ -64,10 +63,10 @@ VarDecl: TYPE  ID  SEMI                      {printf("\n VarDecl found\n\tID: %s
 													struct node * temp = insertNodeType($2, $1, "Globl"); 
 												}
 												else{printf("/n/tError: Duplicate Variable: %s/n",$2);}
-												
 												{
-												char * par = $1;
-												$$ = nodeFun(202, "VarDecl", 0, 0, 0, 0, $2, 0, par[0], 0);}
+													char * par = $1;
+													$$ = nodeFun(202, "VarDecl", 0, 0, 0, 0, $2, 0, par[0], 0);
+												}
 											} 
 											
 		|TYPE ID LBRACK NUM RBRACK SEMI        {printf("\n Array found \n"); 
@@ -120,6 +119,7 @@ Expr: Primary                              {printf("\n Primary found\n");$$ = no
      |Expr ADD Expr                        {printf("\n Addition found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "ADD", 0, ' ',0);} 
      |Expr MULT Expr                       {printf("\n Mult found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "MULT", 0, ' ',0);}
      |Expr SUBS Expr                       {printf("\n Sub found \n");$$ = nodeFun(402, "", $1, 0, $3, 0, "SUBS", 0, ' ',0);}
+     |Expr MOD Expr                       {printf("\n Sub found \n");$$ = nodeFun(402, "", $1, 0, $3, 0, "MOD", 0, ' ',0);}
      |Expr DIV Expr                        {printf("\n Div found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "DIV", 0, ' ',0);}
      |NUM                                  {printf("\n Number found: %d\n", $1);$$ = nodeFun(401, "", 0, 0, 0, 0, "", $1, ' ',0);}
      |ID LBRACK Expr RBRACK EQUALS Expr    {printf("\n ID expression found\n");$$ = nodeFun(404, "", 0, $3, $6, 0, $1, 0, ' ',0);
@@ -149,7 +149,7 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 												}
 											} 
         |LPAR Expr RPAR                    {printf("\n Expression parentheses found\n");$$ = nodeFun(502, "", $2, 0, 0, 0, "", 0, ' ',0);}    
-        |ID LBRACK ExprList RBRACK             {printf("\n Array expression found\n");$$ = nodeFun(504, "", 0, $3, 0, 0, $1, 0, ' ',0);
+        |ID LBRACK ExprList RBRACK          {printf("\n Array expression found\n");$$ = nodeFun(504, "", 0, $3, 0, 0, $1, 0, ' ',0);
 													if(getNode($1,"Globl") == NULL || getNode($1,"Globl") == 0)
 												{
 													printf("\t\tID (%s) does not exist\n",$1); 
@@ -159,7 +159,7 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 												{
 													printf("\tID (%s) EXISTS\n", $1); 
 												}	
-												}
+											}
     ;
 
 ExprList: %empty							{$$ = nodeFun(700, "", 0, 0, 0, 0, "", 0, ' ',0);}

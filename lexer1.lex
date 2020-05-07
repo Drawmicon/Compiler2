@@ -27,6 +27,7 @@ int DISPLAY_FLEX_OUTPUT = 1;
 "*"       {if(DISPLAY_FLEX_OUTPUT) printf("%s MULTIPLY\n", yytext);return MULT;}
 "/"       {if(DISPLAY_FLEX_OUTPUT) printf("%s DIVIDE\n", yytext);return DIV;}
 "-"       {if(DISPLAY_FLEX_OUTPUT) printf("%s MINUS\n", yytext);return SUBS;}
+"%"       {if(DISPLAY_FLEX_OUTPUT) printf("%s MODULUS\n", yytext);return MOD;}
 "read"|"READ"|"Read"    {if(DISPLAY_FLEX_OUTPUT) printf("%s READ\n", yytext);return READ;}
 "break"|"BREAK"|"Break"   {if(DISPLAY_FLEX_OUTPUT) printf("%s BREAK\n", yytext);return BREAK;}
 "write"|"WRITE"|"Write"   {if(DISPLAY_FLEX_OUTPUT) printf("%s WRITE\n", yytext);return WRITE;}

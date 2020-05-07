@@ -302,7 +302,17 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 		  if(e->name[0] == 'S')
 		  {e->NodeBType = 104;}
 		  if(e->name[0] == 'M')
-		  {e->NodeBType = 103;}
+		  {
+			   if(e->name[1] == 'U')
+			{
+			  e->NodeBType = 103;
+			}
+			else
+			{
+				e->NodeBType = 106;
+			}
+			  
+			  }
 		  if(e->name[0] == 'D')
 		  {e->NodeBType = 102;}}
 	  a->l = l;//expr
@@ -450,6 +460,15 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	 // a->m = NULL;//
 	  //a->name = 
 	  strcpy(a->name, "ADD");
+	  break;
+	  
+	  case (106):
+	 a->NodeBType = NodeBType;
+	 //a->l = NULL;
+	 // a->r = NULL;
+	 // a->m = NULL;//
+	  //a->name = 
+	  strcpy(a->name, "MOD");
 	  break;
 	  
 	  //NodeBFun(int NodeBType, char * name, struct NodeB * l, struct NodeB * r, struct NodeB * m,struct NodeB * x, char * text, int val, char sym)
@@ -727,7 +746,99 @@ void printTableau(struct NodeB * a, int lvl)
 	}
 }
 
-
+int findType(struct NodeB * a, int value)
+{
+	
+	if(a != NULL || a != 0)
+	{
+		switch(a->NodeBType) 
+		{
+			/*case 211 ://type int *
+				//printf("int\n" );
+			break;
+			case 212 ://type char *
+				//printf("char\n" );
+			break;*/
+			case 500 ://ID ***
+				//printf("%s\n",a->name );
+				//if(a->name == )
+			break;
+			/*case 300 ://expr
+				//printf(";\n");
+			break;
+			
+			case 303 :
+				//printf("Read\n");
+			break;
+			
+			case 304 :
+				//printf("Write\n");
+			break;
+			*/
+			case 401 ://NUM ***
+				//printf("NUM(%d)\n",a->intValue);
+			break;
+			/*
+			case 403 :// ID = expr
+				//printf("=\n");
+			break;
+			
+			case 404 :
+				//printf("Array = expr\n");
+			break;
+			
+			case 102 :
+				//printf("/\n");
+			break;
+			
+			case 103 :
+				//printf("*\n");
+			break;
+			
+			case 104 :
+				//printf("-\n");
+			break;
+			
+			case 105 :
+				//printf("+\n");
+			break;
+			
+			case 502 :
+				//printf("Parentheis\n");
+			break;
+			
+			case 504 :
+				//printf("(id)[ExprList]\n");
+			break;
+			*/
+			default :
+				//printf("\n" );
+				return value;
+		}
+	}
+	
+	/*
+	if(a->l != 0)
+	{
+		printTableau(a->l, lvl+1);	
+	}
+	if(a->r != 0)
+	{
+		printTableau(a->r, lvl+1);	
+	}
+	
+	if(a->m != 0)
+	{
+		printTableau(a->m, lvl+1);	
+	}
+	
+	if(a->x != 0)
+	{
+		printTableau(a->x, lvl+1);	
+	}
+	*/
+	return 0;
+}
 
 
 

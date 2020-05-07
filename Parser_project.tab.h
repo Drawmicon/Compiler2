@@ -70,7 +70,8 @@ extern int yydebug;
     ADD = 280,
     DIV = 281,
     SUBS = 282,
-    EQUAL = 283
+    MOD = 283,
+    EQUAL = 284
   };
 #endif
 
@@ -84,12 +85,12 @@ union YYSTYPE
   int i;
   double d;
   char c;
-  char type [3]; 
+  char type [3];
   char idname[100] ;
   char arr [100];
   struct Node * fp;
 
-#line 93 "Parser_project.tab.h" /* yacc.c:1909  */
+#line 94 "Parser_project.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -1,0 +1,42 @@
+200 Program
+201 VarDeclList
+202 VarDecl 
+211 int
+212 char
+500 (id)
+203 VarDecl Array
+
+213 StmtList: Stmt
+214 StmtList: Stmt and/or Stmt
+
+STMT
+300 ;
+301 Expr;
+303 Read (id) ;
+304 Write (id) ;
+
+EXPR
+400 Primary
+401 Num
+402 Expr Binary Expr
+403 (id) = exp
+404 (id) [expr] = expr
+
+102 DIV
+103 Mult
+104 SUBS
+105 Add
+106 MOD
+	
+PRIMARY
+500 (id)
+502 ( expr )
+504 (id) [ ExprList ]
+
+700 ExprList
+
+217 ExprListTail: Expr
+218 ExprListTail: Expr ExprListTail
+
+0 head/default
+
