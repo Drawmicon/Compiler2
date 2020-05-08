@@ -11,7 +11,7 @@
 	/*struct NodeB * root;*/
 %}
 
-%token INT ID CHAR TYPE ARRAY NUM
+%token INT ID CHAR TYPE ARRAY NUM LITCHAR LITSTRING
 
 %union{
   int i;
@@ -28,6 +28,8 @@
 %type <c> CHAR
 %type <type> TYPE
 %type <arr> ARRAY
+%type <c> LITCHAR
+%type <arr> LITSTRING
 
 %token IF ELSE WHILE RETURN BREAK READ WRITE
 %token LPAR RPAR LBRACK RBRACK LBRACE RBRACE SEMI EQUALS MULT ADD DIV SUBS MOD
@@ -113,7 +115,16 @@ Expr: Primary                              {printf("\n Primary found\n");$$ = no
 												}
 												else
 												{
-													printf("\tID (%s) EXISTS\n", $1); 
+													/*Check if id is a variable or an array*/
+													if(getType($1, "Globl") == 0 || getType($1, "Globl") == 1)
+													{
+														printf("\tID (%s) EXISTS\n", $1); 
+													}
+													else
+													{
+														printf("\t\tID (%s) is not non-array variable type\n",$1); 
+														exit(0);
+													}
 												} 
 											}
      |Expr ADD Expr                        {printf("\n Addition found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "ADD", 0, ' ',0);} 
@@ -123,6 +134,8 @@ Expr: Primary                              {printf("\n Primary found\n");$$ = no
      |Expr DIV Expr                        {printf("\n Div found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "DIV", 0, ' ',0);}
      |NUM                                  {printf("\n Number found: %d\n", $1);$$ = nodeFun(401, "", 0, 0, 0, 0, "", $1, ' ',0);}
      |ID LBRACK Expr RBRACK EQUALS Expr    {printf("\n ID expression found\n");$$ = nodeFun(404, "", 0, $3, $6, 0, $1, 0, ' ',0);
+																							
+												/*check if ID exists in symbol table*/
 												if(getNode($1,"Globl") == NULL || getNode($1,"Globl") == 0)
 												{
 													printf("\t\tID (%s) does not exist\n",$1); 
@@ -130,7 +143,16 @@ Expr: Primary                              {printf("\n Primary found\n");$$ = no
 												}
 												else
 												{
-													printf("\tID (%s) EXISTS\n", $1); 
+													/*Check if id is array*/
+													if(getType($1, "Globl") == 2 || getType($1, "Globl") == 3)
+													{
+														printf("\tID (%s) EXISTS\n", $1); 
+													}
+													else
+													{
+														printf("\t\tID (%s) is not an array\n",$1); 
+														exit(0);
+													}
 												}
 											}
    ;

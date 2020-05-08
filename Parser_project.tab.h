@@ -51,27 +51,29 @@ extern int yydebug;
     TYPE = 261,
     ARRAY = 262,
     NUM = 263,
-    IF = 264,
-    ELSE = 265,
-    WHILE = 266,
-    RETURN = 267,
-    BREAK = 268,
-    READ = 269,
-    WRITE = 270,
-    LPAR = 271,
-    RPAR = 272,
-    LBRACK = 273,
-    RBRACK = 274,
-    LBRACE = 275,
-    RBRACE = 276,
-    SEMI = 277,
-    EQUALS = 278,
-    MULT = 279,
-    ADD = 280,
-    DIV = 281,
-    SUBS = 282,
-    MOD = 283,
-    EQUAL = 284
+    LITCHAR = 264,
+    LITSTRING = 265,
+    IF = 266,
+    ELSE = 267,
+    WHILE = 268,
+    RETURN = 269,
+    BREAK = 270,
+    READ = 271,
+    WRITE = 272,
+    LPAR = 273,
+    RPAR = 274,
+    LBRACK = 275,
+    RBRACK = 276,
+    LBRACE = 277,
+    RBRACE = 278,
+    SEMI = 279,
+    EQUALS = 280,
+    MULT = 281,
+    ADD = 282,
+    DIV = 283,
+    SUBS = 284,
+    MOD = 285,
+    EQUAL = 286
   };
 #endif
 
@@ -90,7 +92,7 @@ union YYSTYPE
   char arr [100];
   struct Node * fp;
 
-#line 94 "Parser_project.tab.h" /* yacc.c:1909  */
+#line 96 "Parser_project.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

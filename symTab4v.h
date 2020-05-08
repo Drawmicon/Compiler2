@@ -7,11 +7,11 @@
 /* node(char * name, int type, int numberValue, char charValue, int arraySize, int * intArray, char * charArray, 
 struct node ** parameters, char * scopeName, struct node * up, struct node * down,struct node * next,struct node * prev)*/
 
-struct node {
+typedef struct node {
 	char name [100];
 	int type;//0 int, 1 char, 2 intArr, 3 charArr, 4 int function, 5 char function
 	
-	//data	
+	//data
 	int numVal;
 	char charVal;
 	
@@ -26,7 +26,7 @@ struct node {
 	struct node* down;
     struct node* next; 
     struct node* prev; 
-};
+}node;
 
 //this link always point to first Link
 struct node *head = NULL;
@@ -121,6 +121,17 @@ struct node * getNode(char * name, char * scope)//VERIFIED
 	}
 	return NULL;
 }
+
+
+//return type of node, //0 int, 1 char, 2 intArr, 3 charArr, 4 int function, 5 char function
+int getType(struct node * a, char * scope)
+{
+	int t = -1;
+	struct node * b = getNode(a, scope);
+	t = b->type;
+	return t;
+}
+
 
 struct node * moveToEndOfScope(char * scopeLoc)
 {

@@ -37,7 +37,7 @@ char * binOpType(int i)
 		case 100:
 		return "||";
 		break;
-		case 101:
+		case 106:
 		return "%";
 		break;
 		case 102:
@@ -52,7 +52,7 @@ char * binOpType(int i)
 		case 105:
 		return "+";
 		break;
-		case 106:
+		case 101:
 		return "&&";
 		break;
 		case 107:
@@ -188,23 +188,27 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 		  strcpy(a->name, "VARDECL_ID_ARRAY");
 	  break;
 	  
-	  /*
-	  case (211): //INT
+	  
+	  case (010): //010 LITCHAR 
 	 a->NodeBType = NodeBType;
-	 //a->l = NULL;
-	 // a->r = NULL;
+	 //a->stringValue = text;
+	 a->charValue = sym;
 	  //a->m = NULL;
-	  a->name = "INT";
+	  //a->name = "LITCHAR";
+	  strcpy(a->name, "LITCHAR");
 	  break;
 	  
-	  case (212): //CHAR
+	  case (011): //011 LITSTRING
 	 a->NodeBType = NodeBType;
+	 //a->stringValue = text;
+	 strcpy(a->stringValue, text);
 	 //a->l = NULL;
 	 // a->r = NULL;
 	  //a->m = NULL;
-	  a->name = "CHAR";
+	  //a->name = "LITSTRING";
+	  strcpy(a->name, "LITSTRING");
 	  break;
-	  */
+	  
 	  
 	  case (213): //stmtList: stmt
 	 a->NodeBType = NodeBType;
@@ -744,100 +748,6 @@ void printTableau(struct NodeB * a, int lvl)
 	{
 		printTableau(a->x, lvl+1);	
 	}
-}
-
-int findType(struct NodeB * a, int value)
-{
-	
-	if(a != NULL || a != 0)
-	{
-		switch(a->NodeBType) 
-		{
-			/*case 211 ://type int *
-				//printf("int\n" );
-			break;
-			case 212 ://type char *
-				//printf("char\n" );
-			break;*/
-			case 500 ://ID ***
-				//printf("%s\n",a->name );
-				//if(a->name == )
-			break;
-			/*case 300 ://expr
-				//printf(";\n");
-			break;
-			
-			case 303 :
-				//printf("Read\n");
-			break;
-			
-			case 304 :
-				//printf("Write\n");
-			break;
-			*/
-			case 401 ://NUM ***
-				//printf("NUM(%d)\n",a->intValue);
-			break;
-			/*
-			case 403 :// ID = expr
-				//printf("=\n");
-			break;
-			
-			case 404 :
-				//printf("Array = expr\n");
-			break;
-			
-			case 102 :
-				//printf("/\n");
-			break;
-			
-			case 103 :
-				//printf("*\n");
-			break;
-			
-			case 104 :
-				//printf("-\n");
-			break;
-			
-			case 105 :
-				//printf("+\n");
-			break;
-			
-			case 502 :
-				//printf("Parentheis\n");
-			break;
-			
-			case 504 :
-				//printf("(id)[ExprList]\n");
-			break;
-			*/
-			default :
-				//printf("\n" );
-				return value;
-		}
-	}
-	
-	/*
-	if(a->l != 0)
-	{
-		printTableau(a->l, lvl+1);	
-	}
-	if(a->r != 0)
-	{
-		printTableau(a->r, lvl+1);	
-	}
-	
-	if(a->m != 0)
-	{
-		printTableau(a->m, lvl+1);	
-	}
-	
-	if(a->x != 0)
-	{
-		printTableau(a->x, lvl+1);	
-	}
-	*/
-	return 0;
 }
 
 

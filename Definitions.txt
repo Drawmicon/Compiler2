@@ -26,6 +26,7 @@ EXPR
 103 Mult
 104 SUBS
 105 Add
+106 MOD
 	
 PRIMARY
 500 (id)
@@ -37,5 +38,10 @@ PRIMARY
 217 ExprListTail: Expr
 218 ExprListTail: Expr ExprListTail
 
+010 LITCHAR
+011 LITSTRING
+
 0 head/default
 
+
+struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct NodeB * r, struct NodeB * m,struct NodeB * x, char * text, int val, char sym, /*struct node * */ int symTabPtr)
