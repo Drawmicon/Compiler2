@@ -34,7 +34,7 @@ int DISPLAY_FLEX_OUTPUT = 1;
 "return"|"RETURN"|"Return"   {if(DISPLAY_FLEX_OUTPUT) printf("%s RETURN\n", yytext);return RETURN;}
 
 \"(\\.|[^\\"])*\"	{if(DISPLAY_FLEX_OUTPUT) printf("%s LITSTRING\n", yytext); sscanf(yytext, "%s", yylval.arr); return (LITSTRING);}
-\'(\\.|[^"\\])\'	{if(DISPLAY_FLEX_OUTPUT) printf("%s LITCHAR\n", yytext); sscanf(yytext[1], "%c", yylval.c);  return (LITCHAR);}
+\'(\\.|[^"\\])\'	{if(DISPLAY_FLEX_OUTPUT) printf("%s LITCHAR\n", yytext); sscanf(yytext, "%s", yylval.c);  return (LITCHAR);}
 
 [a-z][a-zA-Z0-9_]* {if(DISPLAY_FLEX_OUTPUT) printf("%s ID\n",yytext); sscanf(yytext, "%s", yylval.idname); return (ID);}
 

@@ -10,6 +10,7 @@ struct node ** parameters, char * scopeName, struct node * up, struct node * dow
 typedef struct node {
 	char name [100];
 	int type;//0 int, 1 char, 2 intArr, 3 charArr, 4 int function, 5 char function
+	int setEqualCounter;
 	
 	//data
 	int numVal;
@@ -122,16 +123,55 @@ struct node * getNode(char * name, char * scope)//VERIFIED
 	return NULL;
 }
 
+//return type of node, //0 int, 1 char, 2 intArr, 3 charArr, 4 int function, 5 char function
+int getType(char * a, char * scope)
+{
+	/*int t = -1;
+	struct node * b = getNode(a, scope);
+	t = b->type;
+	return t;*/
+	
+	if(a != NULL || a != 0)
+	{
+		printf("...getting type of %s\n", a);
+		struct node * b = getNode(a, scope);
+		if(b != NULL || b != 0)
+		{
+			printf("...returning type: %d\n",b->type);
+			return b->type;
+		}
+		else 
+		{
+			printf("Node not found\n");
+			exit(0);
+		}
+	}
+}
+
 
 //return type of node, //0 int, 1 char, 2 intArr, 3 charArr, 4 int function, 5 char function
-int getType(struct node * a, char * scope)
+int checkType(char * a, char * scope, int compareType)
 {
 	int t = -1;
 	struct node * b = getNode(a, scope);
-	t = b->type;
+	if(b != NULL || b != 0)
+	{
+		t = b->type;
+		printf("ID(%d) vs %d\n", t, compareType);
+		if(((t%2) == 0) && ((compareType%2) == 0))
+		{
+			printf("Compatible Int Type");
+			t = compareType;
+		}
+		
+		if(((t%2) == 1) && ((compareType%2) == 1))
+		{
+			printf("Compatible Char Type");
+			t = compareType;
+		}
+	}
 	return t;
 }
-
 
 struct node * moveToEndOfScope(char * scopeLoc)
 {
@@ -218,7 +258,34 @@ int matrixLength() {//VERIFIED
    return length;
 }
 
+int arrayBound(struct node * a, char * scope)
+{
+	int t = -1;
+	struct node * b = getNode(a, scope);
+	t = b->arraySize;
+	return t;
+}
 
+int idCounter(struct node * a, char * scope, int value)
+{
+	int t = -1;
+	struct node * b = getNode(a, scope);
+	t = b->setEqualCounter;
+	t += value;
+	b->setEqualCounter = t;
+	return t;
+}
+/*
+int getIDCounter(struct node * a)
+{
+	return a->setEqualCounter;
+}
+
+void incrementIDCounter(struct node * a)
+{
+	a->setEqualCounter = a->setEqualCounter + 1;
+}
+*/
 //insert link at the first location
 void insertNode(char * name, int type, int numberValue, char charValue, int arraySize, int * intArray, char * charArray, struct node ** parameters, char * scopeName, struct node * up, struct node * down,struct node * next,struct node * prev) 
 {
@@ -231,6 +298,7 @@ void insertNode(char * name, int type, int numberValue, char charValue, int arra
 	link->numVal = numberValue;
 	link->charVal = charValue;
 	
+	link->setEqualCounter = 0;
 	link->arraySize = arraySize;//default 1
 	link->intArr = intArray;//array of int
 	link->charArr = charArray;//array of char
@@ -523,6 +591,7 @@ void printNode(struct node * a)//VERIFIED
 		if(a->name != NULL){
 		//printf("\t*****************************************************\n[");
 		printf("\t[%s]\n",a->name);
+		printf("\tID set: %d times\n", a->setEqualCounter);
 		if(a->type == 0)
 		{
 			printf("\t[INT]\n");
@@ -533,14 +602,14 @@ void printNode(struct node * a)//VERIFIED
 		}
 		if(a->type == 3)
 		{
-			printf("\t[CHAR ARR]\n");
+			printf("\t[CHAR ARR: %d]\n", a->arraySize);
 		}
 		if(a->type == 2)
 		{
-			printf("\t[INT ARR]\n");
+			printf("\t[INT ARR: %d]\n", a->arraySize);
 		}
 		//printf("\t[Scope:%s]\n\n",a->scopeName);
-		if(a->arraySize > 0){
+		if(a->arraySize > 1){
 		printf("\t[Array Size:%d]\n\n",a->arraySize);}
 		//printf("]\n\t*****************************************************\n");
 		}

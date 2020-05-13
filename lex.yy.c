@@ -898,7 +898,7 @@ case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
 #line 37 "lexer1.lex"
-{if(DISPLAY_FLEX_OUTPUT) printf("%s LITCHAR\n", yytext); sscanf(yytext[1], "%c", yylval.c);  return (LITCHAR);}
+{if(DISPLAY_FLEX_OUTPUT) printf("%s LITCHAR\n", yytext); sscanf(yytext, "%s", yylval.c);  return (LITCHAR);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP

@@ -20,7 +20,7 @@ EXPR
 401 Num
 402 Expr Binary Expr
 403 (id) = exp
-404 (id) [expr] = expr
+404 (id) "["expr"]" = expr
 
 102 DIV
 103 Mult
@@ -30,8 +30,8 @@ EXPR
 	
 PRIMARY
 500 (id)
-502 ( expr )
-504 (id) [ ExprList ]
+502 "(" expr ")"
+504 (id) "[" ExprList "]"
 
 700 ExprList
 
@@ -44,4 +44,4 @@ PRIMARY
 0 head/default
 
 
-struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct NodeB * r, struct NodeB * m,struct NodeB * x, char * text, int val, char sym, /*struct node * */ int symTabPtr)
+struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct NodeB * r, struct NodeB * m,struct NodeB * x, char * text, int val, char sym, int symTabPtr)

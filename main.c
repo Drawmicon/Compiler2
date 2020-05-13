@@ -33,7 +33,7 @@ int main(int argc, char** argv)
   //printNodeB(headB);  
   //printNodeBHead();   
   //printNodeB(headB->l); 
-  printNodeBHeadTable();
+  printNodeBHeadTable(); 
   //printf("****************************FILE OUTPUT*********************************************\n");
   //printFile();
 	clock_t end = clock();

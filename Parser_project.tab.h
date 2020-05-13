@@ -82,11 +82,11 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 16 "Parser_project.y" /* yacc.c:1909  */
+#line 211 "Parser_project.y" /* yacc.c:1909  */
 
   int i;
   double d;
-  char c;
+  char c [3];
   char type [3];
   char idname[100] ;
   char arr [100];

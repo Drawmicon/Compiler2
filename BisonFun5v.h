@@ -13,7 +13,7 @@ struct NodeB//generic NodeB
 	
 	int intValue;
 	char stringValue [500];
-	char charValue;
+	char charValue[3];
 	
 	char name [100];//char string name
 	
@@ -82,7 +82,7 @@ char * binOpType(int i)
 
 //switch case function that creates NodeBs based on type
 // NodeB type, name, left pointer, right, middle, extra, text value, int value, character value, symbolTablePtr
-struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct NodeB * r, struct NodeB * m,struct NodeB * x, char * text, int val, char sym, /*struct node * */ int symTabPtr)
+struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct NodeB * r, struct NodeB * m,struct NodeB * x, char * text, int val, char * sym, /*struct node * */ int symTabPtr)
 {										
 	struct NodeB *a = malloc(sizeof(struct NodeB));
 	struct NodeB *b = malloc(sizeof(struct NodeB));
@@ -188,18 +188,20 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 		  strcpy(a->name, "VARDECL_ID_ARRAY");
 	  break;
 	  
+	  //!!!!!!!!!!!!!!!!!!!!!!!
 	  
 	  case (010): //010 LITCHAR 
-	 a->NodeBType = NodeBType;
-	 //a->stringValue = text;
-	 a->charValue = sym;
+		a->NodeBType = 10;
+		//a->stringValue = text;
+		//a->charValue = sym;
+		strcpy(a->charValue, sym);
 	  //a->m = NULL;
 	  //a->name = "LITCHAR";
 	  strcpy(a->name, "LITCHAR");
 	  break;
 	  
 	  case (011): //011 LITSTRING
-	 a->NodeBType = NodeBType;
+	 a->NodeBType = 11;
 	 //a->stringValue = text;
 	 strcpy(a->stringValue, text);
 	 //a->l = NULL;
@@ -208,6 +210,30 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  //a->name = "LITSTRING";
 	  strcpy(a->name, "LITSTRING");
 	  break;
+	  
+	  //********************************
+	  
+	   //610 WRITE '.'
+	  case (610):
+	  a->NodeBType = 304;
+	  strcpy(b->charValue, sym);
+	  b->NodeBType = 10;
+	  strcpy(b->name, "LITCHAR");
+	  a->l = b;//LITCHAR
+	  strcpy(a->name, "WRITE");
+	  break;
+	  
+	   //611 WRITE "."
+	  case (611):
+	  a->NodeBType = 304;
+	  strcpy(b->stringValue, text);
+	  b->NodeBType = 11;
+	  strcpy(b->name, "LITSTRING");
+	  a->l = b;//LITSTRING
+	  strcpy(a->name, "WRITE");
+	  break;
+	  
+	  //********************************
 	  
 	  
 	  case (213): //stmtList: stmt
@@ -252,7 +278,10 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  //stmt: READ ID ';'
 	  case (303): 
 	  a->NodeBType = NodeBType;
-	  a->l = l;//id
+	  strcpy(b->name, text);
+		b->NodeBType = 500;
+		
+	  a->l = b;//id
 	  //a->r = NULL;
 	 // a->m = NULL;
 	  //a->name = 
@@ -285,7 +314,7 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  a->NodeBType = NodeBType;
 	  //struct NodeB *d = malloc(sizeof(struct NodeB));
 	  d->intValue = val;//NUM == val
-	  d->NodeBType = 1;
+	  d->NodeBType = 401;
 	  //d->name = "NUM";
 	  strcpy(d->name, "NUM");
 	  a->l = d;//NUM
@@ -331,7 +360,7 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  //struct NodeB *c = malloc(sizeof(struct NodeB));
 	  //c->name = text;//ID name == text
 	  strcpy(c->name, text);
-	  c->NodeBType = 2;
+	  c->NodeBType = 500;
 	  c->symTabPtr = symTabPtr;
 		a->l = c;//ID
 	  a->r = r;//expr
@@ -345,7 +374,7 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  //struct NodeB *c = malloc(sizeof(struct NodeB));
 	  //c->name = text;//ID name == text
 	  strcpy(c->name, text);
-	  c->NodeBType = 2;
+	  c->NodeBType = 500;
 	  c->symTabPtr = symTabPtr;
 	 a->l = c;//ID
 	  a->r = r;//expr
@@ -357,12 +386,12 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  
 	  //Primary: ID or '(' Expr ')' or ID '(' ExprList ')' or ID '[' Expr ']'
 	  //Primary: ID
-	  case (500): 
+	  case (501): 
 	 a->NodeBType = NodeBType;
 	 //struct NodeB *c = malloc(sizeof(struct NodeB));
 	  //c->name = text;//ID name == text
 	  strcpy(c->name, text);
-	  c->NodeBType = 2;
+	  c->NodeBType = 500;
 	  c->symTabPtr = symTabPtr;
 	 a->l = c;//ID
 	  //a->r = NULL;
@@ -387,7 +416,7 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	 //struct NodeB *c = malloc(sizeof(struct NodeB));
 	  //c->name = text;//ID name == text
 	  strcpy(c->name, text);
-	  c->NodeBType = 2;
+	  c->NodeBType = 500;
 	  c->symTabPtr = symTabPtr;
 	 a->l = c;//ID
 	  a->r = r;//exprList
@@ -547,7 +576,7 @@ void printNodeB(struct NodeB * a)
 			printf("Type: %d\n",a->NodeBType);
 			printf("Int Value: %d\n",a->intValue);
 			printf("String Value: %s\n",a->stringValue);
-			printf("Char Value: %d\n",a->charValue);
+			printf("Char Value: %s\n",a->charValue);
 			printf("L Pointer: %d\n",a->l);
 			printf("R Pointer: %d\n",a->r);
 			printf("M Pointer: %d\n",a->m);
@@ -573,12 +602,20 @@ void printTable(struct NodeB * a, int lvl)
 	}
 	else
 	{
-		if(a->NodeBType == 1)
+		if(a->NodeBType == 10)
 		{
-			printf("(%d) Char:%c\t LEVEL_%d\n",a->NodeBType, a->charValue, lvl);
+			printf("(%d) Char:%s\t LEVEL_%d\n",a->NodeBType, a->charValue, lvl);
 		}
-		else{
-			printf("(%d) %s\t LEVEL_%d\n",a->NodeBType, a->name, lvl);
+		else
+		{
+			if(a->NodeBType == 11)
+			{
+				printf("(%d) String:%s\t LEVEL_%d\n",a->NodeBType, a->stringValue, lvl);
+			}
+			else
+			{
+				printf("(%d) %s\t LEVEL_%d\n",a->NodeBType, a->name, lvl);
+			}
 		}
 	}
 	if(a->l != 0)
@@ -725,6 +762,14 @@ void printTableau(struct NodeB * a, int lvl)
 				printf("(id)[ExprList]\n");
 			break;
 			
+			case 010:
+				printf("LITCHAR: %s\n", a->charValue);
+			break;
+			
+			case 011:
+				printf("LITSTRING: %s\n", a->stringValue);
+			break;
+			
 			default :
 				printf("\n" );
 		}
@@ -749,7 +794,6 @@ void printTableau(struct NodeB * a, int lvl)
 		printTableau(a->x, lvl+1);	
 	}
 }
-
 
 
 
