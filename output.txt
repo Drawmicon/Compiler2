@@ -1,0 +1,260 @@
+pi@Drawmicon:/mnt/d/backupfiles/compilerv3$ make bison
+make: 'bison' is up to date.
+pi@Drawmicon:/mnt/d/backupfiles/compilerv3$ ./bison simpleTest4.txt
+Welcome to my compiler:
+
+Parsing:
+
+int TYPEINT
+x ID
+[ LEFT BRACKET
+1 Number
+] RIGHT BRACKET
+
+; SEMICOLON
+
+ Array found
+Scope does not exist
+        New Scope:Globl
+int TYPEINT
+z ID
+[ LEFT BRACKET
+2 Number
+] RIGHT BRACKET
+
+; SEMICOLON
+
+ Array found
+char TYPECHAR
+y ID
+[ LEFT BRACKET
+3 Number
+] RIGHT BRACKET
+
+; SEMICOLON
+
+ Array found
+z ID
+[ LEFT BRACKET
+0 Number
+] RIGHT BRACKET
+
+= EQUALS
+1 Number
+
+ Number found: 1
+; SEMICOLON
+
+ ID expression found
+...getting type of z
+...returning type: 2
+        ID (z) EXISTS
+INcrement counter
+1
+counter INcremented
+        ID (z) EXISTS
+...getting type of z
+...returning type: 2
+...getting type of z
+...returning type: 2
+        ID (z) type:
+...getting type of z
+...returning type: 2
+CHECK TYPE DEFAULT(2) compareto nodeType(404)
+Checkpoint
+...getting type of z
+...returning type: 2
+                        Comparing z (2) vs type(2)
+...getting type of z
+...returning type: 2
+...getting type of z
+...returning type: 2
+z (2) is a compatible type (2)
+CHECK TYPE NUM(401)
+CHECK TYPE NUM(401)
+checkTypeRecursion: 2
+
+ Expr found
+y ID
+[ LEFT BRACKET
+0 Number
+] RIGHT BRACKET
+
+= EQUALS
+'e' LITCHAR
+; SEMICOLON
+
+ ID expression found
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+        ID (y) EXISTS
+INcrement counter
+1
+counter INcremented
+        ID (y) EXISTS
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+        ID (y) type:
+...getting type of y
+...returning type: 3
+CHECK TYPE DEFAULT(3) compareto nodeType(404)
+Checkpoint
+...getting type of y
+...returning type: 3
+                        Comparing y (3) vs type(3)
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+y (3) is a compatible type (3)
+CHECK TYPE CHAR(10)
+checkTypeRecursion: 3
+
+ Expr found
+y ID
+[ LEFT BRACKET
+0 Number
+] RIGHT BRACKET
+
+= EQUALS
+y ID
+[ LEFT BRACKET
+0 Number
+] RIGHT BRACKET
+
+; SEMICOLON
+
+ Array expression found
+        ID (y) EXISTS
+
+ Primary found
+
+ ID expression found
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+        ID (y) EXISTS
+INcrement counter
+2
+counter INcremented
+        ID (y) EXISTS
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+        ID (y) type:
+...getting type of y
+...returning type: 3
+CHECK TYPE DEFAULT(3) compareto nodeType(404)
+Checkpoint
+...getting type of y
+...returning type: 3
+                        Comparing y (3) vs type(3)
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+y (3) is a compatible type (3)
+CHECK TYPE DEFAULT(3) compareto nodeType(400)
+CHECK TYPE DEFAULT(3) compareto nodeType(504)
+Checkpoint
+...getting type of y
+...returning type: 3
+                        Comparing y (3) vs type(3)
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+...getting type of y
+...returning type: 3
+y (3) is a compatible type (3)
+checkTypeRecursion: 3
+
+ Expr found
+
+ Stmt found
+
+ Stmt StmtList found
+
+ Stmt StmtList found
+
+                        AST starting: program
+
+*************************PRINTING SYMBOL TABLE************************************************
+
+
+TOTAL SYMBAL TABLE
+
+Globl:
+        []
+        ID set: 0 times
+        [INT]
+
+        [x]
+        ID set: 0 times
+        [INT ARR: 1]
+
+        [z]
+        ID set: 1 times
+        [INT ARR: 2]
+        [Array Size:2]
+
+
+        [y]
+        ID set: 2 times
+        [CHAR ARR: 3]
+        [Array Size:3]
+
+
+
+END OF TABLE
+
+
+****************************AST*********************************************
+(Node Type: 200) PROGRAM         LEVEL_0
+        (201) VARDECLLIST        LEVEL_1
+                (203) VARDECL_ID_ARRAY   LEVEL_2
+                        (211) TYPE_INT   LEVEL_3
+                        (500) x  LEVEL_3
+                        (1) Num:1        LEVEL_3
+                (201) VARDECLLIST        LEVEL_2
+                        (203) VARDECL_ID_ARRAY   LEVEL_3
+                                (211) TYPE_INT   LEVEL_4
+                                (500) z  LEVEL_4
+                                (1) Num:2        LEVEL_4
+                        (201) VARDECLLIST        LEVEL_3
+                                (203) VARDECL_ID_ARRAY   LEVEL_4
+                                        (212) TYPE_CHAR  LEVEL_5
+                                        (500) y  LEVEL_5
+                                        (1) Num:3        LEVEL_5
+                                (201) VARDECLLIST        LEVEL_4
+        (214) STMTLIST_STMT_STMTLIST     LEVEL_1
+                (301) STMT_EXPR  LEVEL_2
+                        (404)    LEVEL_3
+                                (500) z  LEVEL_4
+                                (401) EXPR_NUM   LEVEL_4
+                                        (401) NUM        LEVEL_5
+                (214) STMTLIST_STMT_STMTLIST     LEVEL_2
+                        (301) STMT_EXPR  LEVEL_3
+                                (404)    LEVEL_4
+                                        (500) y  LEVEL_5
+                                        (10) Char:'e'LITCHAR     LEVEL_5
+                        (213) STMTLIST_STMT      LEVEL_3
+                                (301) STMT_EXPR  LEVEL_4
+                                        (404)    LEVEL_5
+                                                (500) y  LEVEL_6
+                                                (400) EXPR_PRIMARY       LEVEL_6
+                                                        (504) PRIMARY_ID_[EXPRLIST]      LEVEL_7
+                                                                (500) y  LEVEL_8
+        (700) EXPRLIST   LEVEL_1
+***********************TIME ELAPSED****************************
+pi@Drawmicon:/mnt/d/backupfiles/compilerv3$

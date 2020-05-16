@@ -97,6 +97,11 @@
 			if((((getType(a->name, "Globl"))%2) == 0) && (type%2 == 0))
 			{
 				printf("%s (%d) is a compatible type (%d)\n", a->name, (getType(a->name, "Globl")), type);
+				if(idCounter(a->name, "Globl", 0) < 1)
+				{
+					printf("Uninstantiated Variable: %s\n", a->name);
+					exit(0);
+				}
 				return type; 
 			}
 			else
@@ -104,6 +109,11 @@
 				if((((getType(a->name, "Globl"))%2) == 1) && (type%2 == 1))
 				{
 					printf("%s (%d) is a compatible type (%d)\n", a->name, (getType(a->name, "Globl")), type);
+					if(idCounter(a->name, "Globl", 0) < 1)
+					{
+						printf("Uninstantiated Variable: %s\n", a->name);
+						exit(0);
+					}
 					return type; 
 				}
 				else
@@ -112,27 +122,6 @@
 					return -1;
 				}
 			}
-		
-			/*at = getType(a->name, "Globl");
-			printf("CHECK TYPE ID(%d)\n", at);			
-			 if((at == 0 && type%2 == 0) || (at == 2 && type%2 == 0) || (at == 4 && type%2 == 0))
-			 {
-				typeO = type;
-				printf("%s is a compatible int type\n", a->name);
-			 }
-			 else
-			 {			 
-				if((at == 1 && type%2 == 1) || (at == 3 && type%2 == 1) || (at == 5 && type%2 == 1))
-				{
-					printf("%s is a compatible char type\n", a->name);
-					typeO = type;
-				}
-				else
-				{
-					printf("%s (%d) is not a compatible %d type\n", a->name,at, type);
-					return -1;
-				}
-			 }*/
 			 
 			 //if ID variable type == inputted type			 
 			break;
@@ -413,7 +402,7 @@ Expr: Primary                              {printf("\n Primary found\n");$$ = no
 														//check if ID array is in bounds
 														if((arrayBound($1,"Globl"))  > $3 &&(arrayBound($1,"Globl"))  > -1)
 														{
-															printf("\tID (%s) EXISTS\n", $1);
+															//printf("\tID (%s) EXISTS\n", $1);
 														}
 														else
 														{
@@ -457,10 +446,10 @@ Expr: Primary                              {printf("\n Primary found\n");$$ = no
 													/*Check if id is array*/
 													if(getType($1, "Globl") == 2 || getType($1, "Globl") == 3)
 													{
-														printf("\tID (%s) EXISTS\n", $1); 
+														/*printf("\tID (%s) EXISTS\n", $1); 
 														printf("INcrement counter\n");
 														printf("%d\n",idCounter($1,"Globl",1));
-														printf("counter INcremented \n");
+														printf("counter INcremented \n");*/
 													}
 													else
 													{
@@ -485,7 +474,7 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 												}
 												else
 												{
-													printf("\tID (%s) EXISTS\n", $1); 
+													//printf("\tID (%s) EXISTS\n", $1); 
 												}
 											} 
     |LPAR Expr RPAR                	    {printf("\n Expression parentheses found\n");$$ = nodeFun(502, "", $2, 0, 0, 0, "", 0, ' ',0);}    
@@ -500,7 +489,7 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 											{
 												if((arrayBound($1,"Globl"))  > $3 &&(arrayBound($1,"Globl"))  > -1)
 												{
-													printf("\tID (%s) EXISTS\n", $1);
+													//printf("\tID (%s) EXISTS\n", $1);
 												}
 												else
 												{
@@ -519,7 +508,7 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 											}
 											else
 											{
-												printf("\tID (%s) EXISTS\n", $1); 
+												//printf("\tID (%s) EXISTS\n", $1); 
 											}	
 										}										
     ;
@@ -534,8 +523,6 @@ ExprListTail: Expr                          {$$ = nodeFun(217, "", $1, 0, 0, 0, 
 
 %%
 
-
-
-
+	/*optimizations: remove nonreferenced IDs from symbol table*/
 
 

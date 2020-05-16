@@ -133,16 +133,16 @@ int getType(char * a, char * scope)
 	
 	if(a != NULL || a != 0)
 	{
-		printf("...getting type of %s\n", a);
+		//printf("...getting type of %s\n", a);
 		struct node * b = getNode(a, scope);
 		if(b != NULL || b != 0)
 		{
-			printf("...returning type: %d\n",b->type);
+			//printf("...returning type: %d\n",b->type);
 			return b->type;
 		}
 		else 
 		{
-			printf("Node not found\n");
+			//printf("Node not found\n");
 			exit(0);
 		}
 	}
@@ -157,7 +157,7 @@ int checkType(char * a, char * scope, int compareType)
 	if(b != NULL || b != 0)
 	{
 		t = b->type;
-		printf("ID(%d) vs %d\n", t, compareType);
+		//printf("ID(%d) vs %d\n", t, compareType);
 		if(((t%2) == 0) && ((compareType%2) == 0))
 		{
 			printf("Compatible Int Type");
@@ -266,13 +266,16 @@ int arrayBound(struct node * a, char * scope)
 	return t;
 }
 
-int idCounter(struct node * a, char * scope, int value)
+int idCounter(char * a, char * scope, int value)
 {
 	int t = -1;
 	struct node * b = getNode(a, scope);
-	t = b->setEqualCounter;
-	t += value;
-	b->setEqualCounter = t;
+	if(b != NULL || b != 0)
+	{
+		t = b->setEqualCounter;
+		t += value;
+		b->setEqualCounter = t;
+	}
 	return t;
 }
 /*
