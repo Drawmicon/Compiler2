@@ -4,6 +4,7 @@
   #include <stdio.h>
   #include <stdlib.h>
   #include "BisonFun5v.h"
+  #include "mipsTranslator.h"
   
   int yylex();
   int yyerror(char *s);
@@ -193,9 +194,23 @@
 		return typeO;
 	}
 	
+	
+	char * mipsList[1000];
+	int mipsListCounter = 0;
+	
+	/*	
+		recursively go through abstract syntax tree of expression, translate to mips, 
+		then save into char pointer array, 
+		then arrange in correct order
+	*/
+	void addExprMips(struct NodeB * a)
+	{
+		printf("Work in progress function...\n");
+	}
+	 
 %}
 
-%token INT ID CHAR TYPE ARRAY NUM LITCHAR LITSTRING
+%token INT ID CHAR TYPE ARRAY NUM LITCHAR LITSTRING 
 
 %union{
   int i;
@@ -249,6 +264,7 @@ VarDecl: TYPE  ID  SEMI                      {printf("\n VarDecl found\n\tID: %s
 												{
 													//if node doesnt exist, create node in symbol table
 													struct node * temp = insertNodeType($2, $1, "Globl"); 
+
 													//create syntax tree nodes
 													char * par = $1;
 													$$ = nodeFun(202, "VarDecl", 0, 0, 0, 0, $2, 0, par[0], 0);		
@@ -257,21 +273,54 @@ VarDecl: TYPE  ID  SEMI                      {printf("\n VarDecl found\n\tID: %s
 												{
 													printf("\n\tError: Duplicate Variable: %s\n",$2);
 													exit(0);
-												}											
+												}	
+												
+												char * par = $1;
+												if(par[0] == 'i'){
+													addVariables($2,0,0);
+												}
+												else
+												{	
+													if(par[0] == 'c')
+													{
+														addVariables($2,1,0);
+													}
+													else
+													{
+														printf("Error Mips Conversion of %s\n", $2);
+													}
+												}
+												
 											} 
 											
 	|TYPE ID LBRACK NUM RBRACK SEMI        {printf("\n Array found \n"); 
 												//create array node if not exist
+												char * par;
 												if(getNode($2, "Globl") == NULL)
 												{
 													insertNodeArr($2, $1, -1, ' ', $4 , "Globl");
-													char * par = $1;
+													par = $1;
 													$$ = nodeFun(203, "VarDecl", 0, 0, 0, 0, $2, $4, par[0],0);
 												}
 												else
 												{
 													printf("\n\tError: Duplicate Variable: %s\n",$2);
 													exit(0);
+												}
+												
+												if(par[0] == 'i'){
+													addVariables($2,2,$4);
+												}
+												else
+												{	
+													if(par[0] == 'c')
+													{
+														addVariables($2,3,$4);
+													}
+													else
+													{
+														printf("Error Mips Conversion of %s\n", $2);
+													}
 												}
 											}
    ;
@@ -282,18 +331,50 @@ StmtList: Stmt 								{printf("\n Stmt found \n");
       | Stmt StmtList						{printf("\n Stmt StmtList found \n"); 
 												$$ = nodeFun(214, "Stmt", $1, $2, 0, 0, "", 0, ' ',0);
 											}
-   ;  
+   ;   
    
 Stmt:  SEMI                                {printf("\n SEMI found \n");$$ = nodeFun(300, "", 0, 0, 0, 0, "", 0, ' ',0);} 
 	 | WRITE LITCHAR SEMI					{ printf("\n WRITE CHAR %s found \n", $2);
-												$$ = nodeFun(610, "", 0, 0, 0, 0, "", 0, $2,0);
+												struct NodeB * ttt = nodeFun(610, "", 0, 0, 0, 0, "", 0, $2,0);
+												printNodeB(ttt->l);  
+												$$ = ttt;
+												char * coal = $2;
+												addWriteLitChar(coal);  												
 											}
-	 | WRITE LITSTRING SEMI					{ printf("\n WRITE STRING found: %s \n", $2);
-												$$ = nodeFun(611, "", 0, 0, 0, 0, $2, 0, ' ',0);
+	 | WRITE LITSTRING SEMI					{ 
+												printf("\n WRITE STRING found: %s \n", $2);
+												$$ = nodeFun(611, "", 0, 0, 0, 0, $2, 0, ' ',0); 
+ 
+												addWriteLitString($2); 
 											}
      | WRITE Expr SEMI                      {printf("\n WRITE found \n");
 												$$ = nodeFun(304, "", $2, 0, 0, 0, "", 0, ' ',0);
+												/*write expression output int*/
 											}
+											
+	 | WRITE ID SEMI                      {printf("\n WRITE found \n");
+												struct NodeB * t = nodeFun(304, "", $2, 0, 0, 0, "", 0, ' ',0);
+												
+												t->l = nodeFun(501, "", 0, 0, 0, 0, $2, 0, ' ',0);
+												t->r=0;   
+												t->m=0;
+												t->x=0;
+												  
+												if(getNode($2,"Globl") == NULL || getNode($2,"Globl") == 0)
+												{
+													printf("\t\tID (%s) does not exist\n",$2); 
+													exit(0);
+												}
+												else 
+												{ 
+													printf("\tID (%s) EXISTS\n", $2); 
+												}
+												int xx = getType($2, "Globl");
+												addWriteID($2, xx);
+												
+												$$ = t;
+											}										
+											
      |READ ID SEMI                         {printf("\n READ statement found \n");/*struct NodeB * t*/$$ = nodeFun(303, "", 0, 0, 0, 0, $2, 0, ' ',0);
 												if(getNode($2,"Globl") == NULL || getNode($2,"Globl") == 0)
 												{
@@ -301,11 +382,14 @@ Stmt:  SEMI                                {printf("\n SEMI found \n");$$ = node
 													exit(0);
 												}
 												else 
-												{
+												{ 
 													printf("\tID (%s) EXISTS\n", $2); 
 												}
-	 
+												int xx = getType($2, "Globl");
+												addReadID($2, xx);   	 
 											}
+											 
+																					
 											
 	|READ ID LBRACK NUM RBRACK SEMI         {printf("\n READ statement found \n");/*struct NodeB * t*/$$ = nodeFun(303, "", 0, 0, 0, 0, $2, 0, ' ',0);
 												if(getNode($2,"Globl") == NULL || getNode($2,"Globl") == 0)
@@ -321,21 +405,34 @@ Stmt:  SEMI                                {printf("\n SEMI found \n");$$ = node
 													{
 														printf("\tID (%s) EXISTS\n", $2);
 													}
-													else
+													else  
 													{
 														printf("%s is out of array bounds\n", $2);
 														exit(0);
-													}
+													} 
 												}
+												printf("Checkpoint0\n");
+												int xx = getType($2, "Globl");
+												printf("Checkpoint2\n");
+												addReadIDArr($2, xx, $4);
+												printf("Checkpoint3\n");
 	 
 											}
 											
-     |Expr SEMI                            {printf("\n Expr found \n");$$ = nodeFun(301, "", $1, 0, 0, 0, "", 0, ' ',0);}
-     |RETURN Expr SEMI                     {printf("\n RETURN found \n");$$ = nodeFun(302, "", $2, 0, 0, 0, "", 0, ' ',0);}  
+     |Expr SEMI                            {printf("\n Expr found \n");$$ = nodeFun(301, "", $1, 0, 0, 0, "", 0, ' ',0);
+	 
+											}
+     |RETURN Expr SEMI                     {printf("\n RETURN found \n");$$ = nodeFun(302, "", $2, 0, 0, 0, "", 0, ' ',0);
+												/*print out? save expression calculated to $t0?*/
+											}  
    ;
 
-Expr: Primary                              {printf("\n Primary found\n");$$ = nodeFun(400, "", $1, 0, 0, 0, "", 0, ' ',0);}
-	| LITCHAR								{/*printf("LITCHAR found\n");*/$$ = nodeFun(010, "", 0, 0, 0, 0, "", 0, $1,0);}
+Expr: Primary                              {printf("\n Primary found\n");$$ = nodeFun(400, "", $1, 0, 0, 0, "", 0, ' ',0);
+											
+											}
+	| LITCHAR								{/*printf("LITCHAR found\n");*/$$ = nodeFun(010, "", 0, 0, 0, 0, "", 0, $1,0);
+												
+											}
 
      |ID EQUALS Expr                      {printf("\n Assignment found\n");
 												/*FLAW ID CAN BE SET TO EQUAL ITSELT, WITHOUT ALERTING TO THE NULL ERROR*/
@@ -375,13 +472,33 @@ Expr: Primary                              {printf("\n Primary found\n");$$ = no
 												$$ = t;
 												/*###############################################*/
 												
+												/*addIDEqualsExpr();*/
+												
 											}
-     |Expr ADD Expr                        {printf("\n Addition found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "ADD", 0, ' ',0);} 
-     |Expr MULT Expr                       {printf("\n Mult found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "MULT", 0, ' ',0);}
-     |Expr SUBS Expr                       {printf("\n Sub found \n");$$ = nodeFun(402, "", $1, 0, $3, 0, "SUBS", 0, ' ',0);}
-     |Expr MOD Expr                       {printf("\n Sub found \n");$$ = nodeFun(402, "", $1, 0, $3, 0, "MOD", 0, ' ',0);}
-     |Expr DIV Expr                        {printf("\n Div found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "DIV", 0, ' ',0);}
-     |NUM                                  {printf("\n Number found: %d\n", $1);$$ = nodeFun(401, "", 0, 0, 0, 0, "", $1, ' ',0);}
+     |Expr ADD Expr                        {printf("\n Addition found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "ADD", 0, ' ',0);
+	 
+												
+											} 
+     |Expr MULT Expr                       {printf("\n Mult found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "MULT", 0, ' ',0);
+	 
+											
+											} 
+     |Expr SUBS Expr                       {printf("\n Sub found \n");$$ = nodeFun(402, "", $1, 0, $3, 0, "SUBS", 0, ' ',0);
+											  
+											
+											} 
+     |Expr MOD Expr                       {printf("\n Sub found \n");$$ = nodeFun(402, "", $1, 0, $3, 0, "MOD", 0, ' ',0);
+												
+												
+											}
+     |Expr DIV Expr                        {printf("\n Div found\n");$$ = nodeFun(402, "", $1, 0, $3, 0, "DIV", 0, ' ',0);
+												
+											 
+											}
+     |NUM                                  {printf("\n Number found: %d\n", $1);$$ = nodeFun(401, "", 0, 0, 0, 0, "", $1, ' ',0);
+	 
+												/*li num to $t5*/
+											}
 	 |ID LBRACK NUM RBRACK EQUALS Expr    {printf("\n ID expression found\n");struct NodeB * tt = nodeFun(404, "", 0, $3, $6, 0, $1, 0, ' ',0);																							
 												/*check if ID exists in symbol table*/
 												if(getNode($1,"Globl") == NULL || getNode($1,"Globl") == 0)
@@ -432,6 +549,11 @@ Expr: Primary                              {printf("\n Primary found\n");$$ = no
 													exit(0);
 												}
 												$$ = tt;
+												
+												/*
+													get memory address of ID at index, then calculate expression, then set (address) to sw of calculation
+												*/
+												
 											}
      |ID LBRACK Expr RBRACK EQUALS Expr    {printf("\n ID expression found\n");$$ = nodeFun(404, "", 0, $3, $6, 0, $1, 0, ' ',0);
 																							
@@ -476,8 +598,14 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 												{
 													//printf("\tID (%s) EXISTS\n", $1); 
 												}
+												
+												/*get memory address of ID*/
+												
 											} 
-    |LPAR Expr RPAR                	    {printf("\n Expression parentheses found\n");$$ = nodeFun(502, "", $2, 0, 0, 0, "", 0, ' ',0);}    
+    |LPAR Expr RPAR                	    {printf("\n Expression parentheses found\n");$$ = nodeFun(502, "", $2, 0, 0, 0, "", 0, ' ',0);
+											
+											/*first expression*/
+										}    
 	
 	|ID LBRACK NUM RBRACK          {printf("\n Array expression found\n");$$ = nodeFun(504, "", 0, $3, 0, 0, $1, 0, ' ',0);
 											if(getNode($1,"Globl") == NULL || getNode($1,"Globl") == 0)
@@ -496,7 +624,9 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 													printf("%s is out of array bounds\n", $1);
 													exit(0);
 												}
-											}	
+											}
+											
+											/*get memory address of ID at index*/
 										}
 	
     |ID LBRACK ExprList RBRACK          {printf("\n Array expression found\n");$$ = nodeFun(504, "", 0, $3, 0, 0, $1, 0, ' ',0);
@@ -509,7 +639,11 @@ Primary: ID                                {printf("\n ID found: %s\n", $1);$$ =
 											else
 											{
 												//printf("\tID (%s) EXISTS\n", $1); 
+												
 											}	
+											
+											/*Calculate expression list, then
+											get memory address of ID at that index*/
 										}										
     ;
 
@@ -522,7 +656,4 @@ ExprListTail: Expr                          {$$ = nodeFun(217, "", $1, 0, 0, 0, 
    ;
 
 %%
-
 	/*optimizations: remove nonreferenced IDs from symbol table*/
-
-

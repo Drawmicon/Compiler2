@@ -148,6 +148,24 @@ int getType(char * a, char * scope)
 	}
 }
 
+int getArrSize(char * a, char * scope)
+{
+	if(a != NULL || a != 0)
+	{
+		//printf("...getting type of %s\n", a);
+		struct node * b = getNode(a, scope);
+		if(b != NULL || b != 0)
+		{
+			//printf("...returning type: %d\n",b->type);
+			return b->arraySize;
+		}
+		else 
+		{
+			//printf("Node not found\n");
+			exit(0);
+		}
+	}
+}
 
 //return type of node, //0 int, 1 char, 2 intArr, 3 charArr, 4 int function, 5 char function
 int checkType(char * a, char * scope, int compareType)

@@ -5,6 +5,7 @@ char * strings;
 char * variables;
 char * instructions;
 FILE *fp;
+int stringCounter = 0;
 
 char* concat(const char *s1, const char *s2)
 {
@@ -15,7 +16,7 @@ char* concat(const char *s1, const char *s2)
 		strcat(result, s2);
 		//free(s1);
 		//free(s2);
-		printf("******************************\n%s\n", result);
+		printf("*************both*****************\n%s\n", result);
 		return result;
 	}
 	
@@ -25,7 +26,7 @@ char* concat(const char *s1, const char *s2)
 		strcpy(result, s1);
 		//free(s1);
 		//free(s2);
-		printf("******************************\n%s\n", result);
+		printf("************s1******************\n%s\n", result);
 		return result;
 	}
 	
@@ -35,7 +36,7 @@ char* concat(const char *s1, const char *s2)
 		strcpy(result, s2);
 		//free(s1);
 		//free(s2);
-		printf("******************************\n%s\n", result);
+		printf("**************s2****************\n%s\n", result);
 		return result;
 	}
 	return " ";
@@ -46,34 +47,50 @@ char* concat(const char *s1, const char *s2)
 void addVariables(char * name, int type, int arrSize)
 {
 	char * t;
-	char arrSizeX;
+	int arrSizex4= arrSize*4;
+	char arrSizeX[100];
 	switch(type) 
 	{
 	   case 0:
-			t = concat(name, ": .word #integer variable");
+			t = concat(name, ": .word #integer variable\n");
 			variables = concat(variables, t);
 		  break;
 		
 	   case 1:
-			t = concat(name,": .byte #character variable");
+			t = concat(name,": .byte #character variable\n");
 			variables = concat(variables, t);
 		break; 
 		
 		case 2:
 			t = concat(name,": .space ");
-			arrSizeX = (arrSize*4) + '0';
+			//arrSizeX = arrSizex4 + '0';
+			sprintf(arrSizeX, "%d", arrSizex4);
 			t = concat(t, arrSizeX );
-			t = concat(t," #integer array");
+			t = concat(t," #integer array\n");
 			variables = concat(variables, t);
 		break; 
 		
 		case 3:
 			t = concat(name,": .space ");
-			arrSizeX = (arrSize) + '0';
+			//arrSizeX = arrSizex4 + '0';
+			sprintf(arrSizeX, "%d", arrSize);
 			t = concat(t, arrSizeX );
-			t = concat(t," #char array");
+			t = concat(t," #character array\n");
 			variables = concat(variables, t);
 		break; 
+		
+		/*case 10://message1: .asciiz "Word or character(s)..."
+			strings = concat(strings, name);
+			strings = concat(strings, ": .asciiz ");
+			strings = concat(strings, liString);
+			strings = concat(strings, "\n");
+		break;
+		
+		case 11:
+			t = concat(name,": .byte #literal character\n");
+			t = concat(t,litChar[1]);
+			variables = concat(variables, t);
+		break;*/
 		
 		default:
 			printf("Error converting ID %s into MIPS code\n", name);
@@ -81,9 +98,19 @@ void addVariables(char * name, int type, int arrSize)
 	}
 }
 
+void addLitString(char * arr)
+{
+	/*
+		010 LITCHAR
+		011 LITSTRING
+	*/
+	
+}
+
 void addDotData()
 {
 	variables = concat(variables, ".data\n");
+	//printf("Testing>> %s\n", variables);
 }
 
 void addStart()
@@ -93,7 +120,6 @@ void addStart()
 
 void addEnd()
 {
-	
 	instructions = concat( instructions, "\nli $v0, 10 			# parameter call code for terminate\nsyscall\n.end main");
 }
 
@@ -110,13 +136,23 @@ void printAllStrings()
 
 void write2File()
 {
-	char * all;
+	char * all = NULL;
 	all= concat(all, strings);
 	all = concat(all, variables);
 	all = concat(all, instructions);
+	printf("\n\n\n\nPRINTING>>>\n%s\n", all);
 	fp = fopen("mips.asm", "w+");
-	if(all != NULL || all != 0){
-		fputs(fp, all);}
+	if (fp == NULL)
+	{
+		printf("Error opening file!\n");
+		exit(1);
+	}
+	
+	if(all != NULL || all != 0)
+	{
+		//printf("PRINTING>>>\n%s\n", all);
+		fputs(all, fp);
+	}
 	//fputs("This is testing for fputs...\n", fp);
 	fclose(fp);
 }
@@ -125,7 +161,11 @@ int main()
 {
 	addDotData();
 	addStart();
-	addVariables("Fake",0,0);
+	addVariables("FakeInt",0,0);
+	addVariables("FakeChar",1,0);
+	addVariables("FakeIntArr",2,5);
+	addVariables("FakeCharArr",3,5);
+
 	addEnd();
 	printAllStrings();
 	write2File();

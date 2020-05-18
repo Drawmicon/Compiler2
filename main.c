@@ -21,6 +21,9 @@ int main(int argc, char** argv)
   // lex through the input:
   //while(yylex()); 
   printf("\nParsing:\n\n");  
+  
+  	addDotData();
+	addStart();
 	   
   //return yyparse();  
   yyparse();
@@ -34,8 +37,23 @@ int main(int argc, char** argv)
   //printNodeBHead();   
   //printNodeB(headB->l); 
   printNodeBHeadTable(); 
-  //printf("****************************FILE OUTPUT*********************************************\n");
+  printf("****************************FILE OUTPUT*********************************************\n");
   //printFile();
+  
+	/*
+	//traverse ast backwards
+	struct NodeB * ptr = headB;
+	while(ptr->l != NULL)
+	{
+		
+	}*/
+  
+  	addEndMips();
+	printAllStringsMips();
+	write2File();
+  
+	
+  
 	clock_t end = clock();
 	time_spent += (double) (end-begin)/CLOCKS_PER_SEC; 
 	

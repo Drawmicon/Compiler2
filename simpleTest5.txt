@@ -1,5 +1,19 @@
-int x[1];
+char lie;
+int x[10];
 int y;
-y = 0;
-x[0] = 1 + 2 * 3 / 4 - y;
+char coal[5];
+
+write "FoundError:StringsCannotHaveSpaces\nPrintingCharacter:";
+write 'a';
+write "\n";
+write "Entercharacter:";
+read lie;
+write "\nInputtedCharacter:";
+write lie;
+
+write "\nEnterNumber:";
+
+read y;
+write "InputtedNumber:";
+write y;
 

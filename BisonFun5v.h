@@ -219,6 +219,7 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  strcpy(b->charValue, sym);
 	  b->NodeBType = 10;
 	  strcpy(b->name, "LITCHAR");
+	  strcpy(b->charValue, sym);
 	  a->l = b;//LITCHAR
 	  strcpy(a->name, "WRITE");
 	  break;
@@ -229,6 +230,7 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  strcpy(b->stringValue, text);
 	  b->NodeBType = 11;
 	  strcpy(b->name, "LITSTRING");
+	  strcpy(b->stringValue, text);
 	  a->l = b;//LITSTRING
 	  strcpy(a->name, "WRITE");
 	  break;
@@ -314,7 +316,7 @@ struct NodeB * nodeFun(int NodeBType, char * name, struct NodeB * l, struct Node
 	  a->NodeBType = NodeBType;
 	  //struct NodeB *d = malloc(sizeof(struct NodeB));
 	  d->intValue = val;//NUM == val
-	  d->NodeBType = 401;
+	  d->NodeBType = 1;
 	  //d->name = "NUM";
 	  strcpy(d->name, "NUM");
 	  a->l = d;//NUM
